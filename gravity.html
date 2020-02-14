@@ -8,33 +8,35 @@
 </style>
 <script>
   const START = {
-    x: screen.width / 1.5,
+    x: screen.width / 2.5,
     y: screen.height / 3,
   }
   class Particle {
-    constructor(x, y, { size, veolcity, weight, color } = { size: 5 }) {
+    constructor(x, y, { size, veolcity, weight, color }) {
       this.position = createVector(x, y)
-      this.radius = size
       this.velocity = createVector(veolcity || 1, 0)
       this.acceleration = createVector(5, 5)
+      this.radius = size || 5
+      this.color = color || 'white'
       this.weight = weight
-      this.color = color
     }
 
     render() {
       const diameter = this.radius * 2
+      fill(color(this.color))
+      // noStroke() // Don't draw a stroke around shapes
       ellipse(this.position.x, this.position.y, diameter)
 
       this.position.add(this.velocity)
       
       this.velocity
         .add(this.acceleration)
-        .limit(2 + Math.random() * 10)
+        .limit(10 + Math.random() * 10)
 
       this.acceleration = 
         createVector(
-          this.attractorX || START.x + Math.random() * 100 ,
-          this.attractorY || START.y + Math.random() * 100
+          this.attractorX || START.x + Math.random() * 200 ,
+          this.attractorY || START.y + Math.random() * 200
         )
         .sub(this.position)
         .mult(0.001 + Math.random() / 100)
@@ -52,9 +54,9 @@
     createCanvas(screen.width, screen.height)
     background('#99ccff')
     
-    particles.push(new Particle(START.x, START.y))
-    particles.push(new Particle(START.x, START.y))
-    particles.push(new Particle(START.x, START.y))
+    particles.push(new Particle(START.x, START.y, { size: 10, weight: 1 }))
+    particles.push(new Particle(START.x, START.y, { size: 10, weight: 1 }))
+    particles.push(new Particle(START.x, START.y, { size: 10, weight: 1 }))
   }
 
   function draw(params) {
