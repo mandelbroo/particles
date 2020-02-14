@@ -1,0 +1,16 @@
+{
+	"name": "hot-reloader",
+	"version": "1.0.0",
+	"license": "MIT",
+	"scripts": {
+		"watch": "PORT=3000 nodemon server.js"
+	},
+	"devDependencies": {
+		"express": "^4.16.3",
+		"node-watch": "^0.5.8",
+		"socket.io": "^2.0.4"
+	},
+	"dependencies": {
+		"nodemon": "^2.0.2"
+	}
+}

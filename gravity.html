@@ -1,0 +1,76 @@
+<script src="http://localhost:3000/socket"></script>
+<script src="http://localhost:3000/client"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+<style>
+  * {
+    margin: 0;
+  }
+</style>
+<script>
+  const START = {
+    x: screen.width / 1.5,
+    y: screen.height / 3,
+  }
+  class Particle {
+    constructor(x, y, { size, veolcity, weight, color } = { size: 5 }) {
+      this.position = createVector(x, y)
+      this.radius = size
+      this.velocity = createVector(veolcity || 1, 0)
+      this.acceleration = createVector(5, 5)
+      this.weight = weight
+      this.color = color
+    }
+
+    render() {
+      const diameter = this.radius * 2
+      ellipse(this.position.x, this.position.y, diameter)
+
+      this.position.add(this.velocity)
+      
+      this.velocity
+        .add(this.acceleration)
+        .limit(2 + Math.random() * 10)
+
+      this.acceleration = 
+        createVector(
+          this.attractorX || START.x + Math.random() * 100 ,
+          this.attractorY || START.y + Math.random() * 100
+        )
+        .sub(this.position)
+        .mult(0.001 + Math.random() / 100)
+    }
+
+    attract(particle) {
+      this.attractorX = particle.x
+      this.attractorY = particle.y
+    }
+  } 
+
+  let particles = []
+
+  function setup() {
+    createCanvas(screen.width, screen.height)
+    background('#99ccff')
+    
+    particles.push(new Particle(START.x, START.y))
+    particles.push(new Particle(START.x, START.y))
+    particles.push(new Particle(START.x, START.y))
+  }
+
+  function draw(params) {
+    background('#99ccff')
+    particles.forEach(p => p.render())
+    particles.forEach((p, i) => {
+      const nextIndex = i + 1
+      const index = nextIndex >=particles.length ? 0 : nextIndex
+      p.attract(particles[index])
+    })
+  }
+
+  function fps() {
+    let fps = frameRate()
+    fill(255)
+    stroke(0)
+    text("FPS: " + fps.toFixed(2), 10, height - 10)
+  }
+</script>
