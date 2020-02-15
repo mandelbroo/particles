@@ -10,9 +10,12 @@
   }
 </style>
 <script>
+  // ENABLE TO SEE DETAILED ERRORS
+  p5.disableFriendlyErrors = true
+
   const START = {
-    x: screen.width / 2.5,
-    y: screen.height / 3,
+    x: screen.width / 8,
+    y: screen.height / 4,
   }
   class Particle {
     constructor(x, y, { size, veolcity, weight, color }) {
@@ -56,26 +59,35 @@
   function setup() {
     createCanvas(screen.width, screen.height)
     background('#99ccff')
-    
-    particles.push(new Particle(START.x, START.y, { size: 10, weight: 1 }))
-    particles.push(new Particle(START.x, START.y, { size: 10, weight: 1 }))
     particles.push(new Particle(START.x, START.y, { size: 10, weight: 1 }))
   }
 
   function draw(params) {
     background('#99ccff')
     particles.forEach(p => p.render())
+    frameRate(60)
+    textSize(18)
+    text(`fps:${Number.parseInt(frameRate())}`, 10, 20)
+    textSize(32)
+    text(particles.length, 10, 65)
+    fill(2, 102, 153)
+  }
+
+  window.onclick = e => {
+    console.log(e.buttons)
+
+    if (particles.length >= 100) particles.shift()
+    
+    particles.push(new Particle(mouseX, mouseY, {
+      size: 10,
+      weight: 1,
+      color: 'white'
+    }))
+
     particles.forEach((p, i) => {
       const nextIndex = i + 1
       const index = nextIndex >=particles.length ? 0 : nextIndex
       p.attract(particles[index])
     })
-  }
-
-  function fps() {
-    let fps = frameRate()
-    fill(255)
-    stroke(0)
-    text("FPS: " + fps.toFixed(2), 10, height - 10)
   }
 </script>
