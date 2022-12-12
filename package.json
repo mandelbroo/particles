@@ -6,7 +6,7 @@
 		"watch": "PORT=3000 nodemon server.js"
 	},
 	"devDependencies": {
-		"express": "^4.16.3",
+		"express": "^4.17.3",
 		"node-watch": "^0.5.8",
 		"socket.io": "^2.0.4"
 	},
